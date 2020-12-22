@@ -1,5 +1,7 @@
 package com.micro.respuestas.model.entity;
 
+// CONFIG DATA JPA
+/*
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,33 +11,46 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+*/
+
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import com.commons.examenes.models.entity.Pregunta;
 import com.micro.common.alumnos.models.entity.Alumno;
 
-@Entity
-@Table(name="respuestas")
+//@Entity
+//@Table(name="respuestas")
+@Document(collection = "respuestas")
 public class Respuesta {
 	
+	//@Id
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	//private Long id;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String texto;	
+	private String id;
+	private String texto;
 	
 	//@ManyToOne(fetch = FetchType.LAZY) //muchas respuestas a un alumno
+	//@Transient
 	@Transient
 	private Alumno alumno;
 	
-	@Column(name = "alumno_id")
+	//@Column(name = "alumno_id")
 	private Long alumnoId;
 	
-	@OneToOne(fetch = FetchType.LAZY) //una respuesta a una pregunta
+	//@OneToOne(fetch = FetchType.LAZY) //una respuesta a una pregunta
+	@Transient
 	private Pregunta pregunta;
 	
-	public Long getId() {
+	//nuevo para mongo
+	private Long preguntaId;
+	
+	public String getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getTexto() {
@@ -61,9 +76,11 @@ public class Respuesta {
 	}
 	public void setPregunta(Pregunta pregunta) {
 		this.pregunta = pregunta;
-	}
-	@Override
-	public String toString() {
-		return "Respuesta [id=" + id + ", texto=" + texto + "]";
 	}	
+	public Long getPreguntaId() {
+		return preguntaId;
+	}
+	public void setPreguntaId(Long preguntaId) {
+		this.preguntaId = preguntaId;
+	}
 }

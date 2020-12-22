@@ -1,6 +1,6 @@
 package com.micro.respuestas.services;
 
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 //import org.springframework.transaction.annotation.Transactional;
 
-import com.commons.examenes.models.entity.Examen;
-import com.commons.examenes.models.entity.Pregunta;
-import com.micro.respuestas.clients.ExamenFeingClient;
+//import com.commons.examenes.models.entity.Examen;
+//import com.commons.examenes.models.entity.Pregunta;
+//import com.micro.respuestas.clients.ExamenFeingClient;
 import com.micro.respuestas.model.entity.Respuesta;
 import com.micro.respuestas.repository.RespuestaRepository;
 
@@ -20,8 +20,8 @@ public class RespuestaServicesImpl implements RespuestaService {
 	@Autowired
 	private RespuestaRepository repo;
 	
-	@Autowired
-	private ExamenFeingClient examenFeinClient;
+	//@Autowired
+	//private ExamenFeingClient examenFeinClient;
 	
 	@Override
 	//@Transactional
@@ -33,7 +33,8 @@ public class RespuestaServicesImpl implements RespuestaService {
 	//@Transactional(readOnly = true)
 	public Iterable<Respuesta> findRespuestaByAlumnoByExamen(Long alumnoId, Long examenId) {
 		//return repo.findRespuestaByAlumnoByExamen(alumnoId, examenId);
-		Examen examen = examenFeinClient.obtenerExamenPorId(examenId);
+		/*
+		 * Examen examen = examenFeinClient.obtenerExamenPorId(examenId);
 		
 		List<Pregunta> preguntas = examen.getPreguntas(); 
 		List<Long> preguntasId = preguntas.stream().map(p -> p.getId()).collect(Collectors.toList());
@@ -47,6 +48,8 @@ public class RespuestaServicesImpl implements RespuestaService {
 			});
 			return r;
 		}).collect(Collectors.toList());
+		*/
+		List<Respuesta> respuestas = (List<Respuesta>) repo.findRespuestaByAlumnoByExamen(alumnoId, examenId);
 		
 		return respuestas;
 	}
@@ -55,6 +58,7 @@ public class RespuestaServicesImpl implements RespuestaService {
 	//@Transactional(readOnly = true)
 	public Iterable<Long> findExamenesIdsConRespuestasByAlumno(Long alumnoId) {		
 		//return repo.findExamenesIdsConRespuestasByAlumno(alumnoId);
+		/*
 		List<Respuesta> respuestasAlumno = (List<Respuesta>) repo.findByAlumnoId(alumnoId);
 		List<Long> examenIds = Collections.emptyList();
 		
@@ -62,7 +66,11 @@ public class RespuestaServicesImpl implements RespuestaService {
 			List<Long> preguntasIds = respuestasAlumno.stream().map(r -> r.getPreguntaId()).collect(Collectors.toList());
 			examenIds = examenFeinClient.obtenerExamenesIdsPorPreguntasIdRespondidas(preguntasIds);
 		}
+		*/
 		
+		List<Respuesta> respuestasAlumno = (List<Respuesta>) repo.findExamenesIdsConRespuestasByAlumno(alumnoId);
+		List<Long> examenIds = respuestasAlumno.stream().map(r -> r.getPregunta().getExamen().getId()).distinct().collect(Collectors.toList());
+				
 		return examenIds;
 	}
 

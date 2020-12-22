@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
+//import org.springframework.data.annotation.Transient;
 
 import com.commons.examenes.models.entity.Pregunta;
 import com.micro.common.alumnos.models.entity.Alumno;
@@ -34,14 +34,12 @@ public class Respuesta {
 	
 	//@ManyToOne(fetch = FetchType.LAZY) //muchas respuestas a un alumno
 	//@Transient
-	@Transient
 	private Alumno alumno;
 	
 	//@Column(name = "alumno_id")
 	private Long alumnoId;
 	
 	//@OneToOne(fetch = FetchType.LAZY) //una respuesta a una pregunta
-	@Transient
 	private Pregunta pregunta;
 	
 	//nuevo para mongo
